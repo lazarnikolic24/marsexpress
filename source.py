@@ -109,7 +109,7 @@ plt.subplot(3, 1, 2, title = "acceleration")
 plt.plot(t[1 : n - 5], aa[1 : n - 5], linewidth = 0.2)
 plt.xlabel("t [days]")
 plt.ylabel("a [au/days^2]")
-plt.yscale('log')
+#plt.yscale('log')
 plt.plot(t[:], np.full((n), AE, dtype=float), ":")
 plt.plot(t[:], np.full((n), AM, dtype=float), "--")
 
@@ -119,7 +119,7 @@ for i in range(n):
     rr[i] = np.linalg.norm(r[i, :])
 
 plt.subplot(3, 1, 3, title = "Newton's law of gravitation")
-plt.plot((1/rr**2)[: n - 1], aa)
+plt.plot((1/rr**2)[: n - 1], aa[: n - 1])
 plt.xlabel("1/r^2")
 plt.ylabel("a")
 
