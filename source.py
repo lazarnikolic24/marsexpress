@@ -119,7 +119,7 @@ for i in range(n):
     rr[i] = np.linalg.norm(r[i, :])
 
 plt.subplot(3, 1, 3, title = "Newton's law of gravitation")
-plt.plot((1/rr**2)[: n - 1], aa[: n - 1])
+plt.plot((1/rr**2)[1 : n - 1], aa[1 : n - 1])
 plt.xlabel("1/r^2")
 plt.ylabel("a")
 
