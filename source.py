@@ -39,7 +39,6 @@ plt.subplot(1, 2, 2, aspect = "equal", title = "highres data")
 
 t,x,y = np.loadtxt("marsexpresshr.d", usecols = (0,1,2), unpack = True)
 n = len(t)
-dt = t[1] - t[0]
 r = np.zeros((n, 2), float)
 r[:, 0] = x
 r[:, 1] = y
@@ -64,45 +63,63 @@ omegaM = 2 * np.pi / TM
 rM = RM * np.transpose(np.array([np.cos(omegaM*tt), np.sin(omegaM*tt)]))
 plt.plot(rM[:, 0], rM[:, 1], "--", color = "r")
 
+#intenzitet brzine i ubrzanja zemlje i marsa su konstantne
+VE = 2*np.pi * RE/TE
+VM = 2*np.pi * RM/TM
+
+AE = 4 * np.pi**2 * RE / TE**2
+AM = 4* np.pi**2 * RM / TM**2
+
 # brzina i ubrzanje
 
 n = len(r)
-v = np.zeros((n, 2), float)
+dt = t[1] - t[0]
+
+v = np.zeros((n - 1, 2), float)
 for i in range(n - 1):
     v[i, :] = (r[i + 1, :] - r[i, :]) / dt
 
-a = np.zeros((n, 2), float)
-for i in range(2, n - 1):
+a = np.zeros((n - 1, 2), float)
+for i in range(1, n - 1):
     a[i, :] = (v[i, :] - v[i - 1, :]) / dt
 
-vv = np.zeros((n,1),float)
-aa = np.zeros((n,1),float)
-for i in range(n):
+vv = np.zeros((n - 1, 1), float)
+for i in range(n - 1):
     vv[i] = np.linalg.norm(v[i,:])
-    aa[i] = np.linalg.norm(a[i,:])
 
+aa = np.zeros((n - 1, 1), float)
+for i in range(1, n - 1):
+    aa[i] = np.linalg.norm(a[i, :])
+
+
+plt.subplots_adjust(wspace=0.3)
+
+#plotovanje brzine high-res data
 fig2 = plt.figure()
 
 plt.subplot(3, 1, 1, title = "velocity")
-plt.plot(t, vv)
-plt.axis("equal")
+plt.plot(t[: n - 1], vv[: n - 1])
 plt.xlabel("t [days]")
 plt.ylabel("v [au/days]")
+plt.plot(t[:], np.full((n), VE, dtype=float), ":")
+plt.plot(t[:], np.full((n), VM, dtype=float), "--")
 
-
+#plotovanje ubrzanja high-res data
 plt.subplot(3, 1, 2, title = "acceleration")
-plt.plot(t, aa)
-plt.axis("equal")
+plt.plot(t[1 : n - 1], aa[1 : n - 1])
 plt.xlabel("t [days]")
 plt.ylabel("a [au/days^2]")
+plt.yscale('log')
+plt.plot(t[:], np.full((n), AE, dtype=float), ":")
+plt.plot(t[:], np.full((n), AM, dtype=float), "--")
+
 
 rr = np.zeros((n,1),float)
 for i in range(n):
     rr[i] = np.linalg.norm(r[i,:])
 
 plt.subplot(3, 1, 3, title = "acceleration")
-plt.plot(1/rr**2, aa)
-plt.axis("equal")
+#plt.plot(1/rr**2, aa)
 plt.xlabel("t [days]")
 plt.ylabel("v [au/days]")
 
