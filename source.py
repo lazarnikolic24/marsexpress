@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.signal import savgol_filter as sf
 
 t,x,y = np.loadtxt("marsexpresslr.d", usecols = (0,1,2), unpack = True)
 n = len(t)
@@ -113,15 +114,33 @@ plt.ylabel("a [au/days^2]")
 plt.plot(t[:], np.full((n), AE, dtype=float), ":")
 plt.plot(t[:], np.full((n), AM, dtype=float), "--")
 
+#radim malu probu
+#M_sun = 1.989e30
+#G = 6.67430e-11
+
+plt.subplot(3, 1, 3, title = "Newton's law of gravitation")
 
 rr = np.zeros((n, 1),float)
 for i in range(n):
     rr[i] = np.linalg.norm(r[i, :])
 
+#aac = G * M_sun / np.square(rr)
 invr2 = 1 / np.square(rr)
 
-plt.subplot(3, 1, 3, title = "Newton's law of gravitation")
-plt.plot(invr2[1 : n - 1], aa[1 : n - 1])
+smoothed_aa = sf(aa.flatten(), window_length=101, polyorder=3)
+smoothed_aa_flat = smoothed_aa.flatten()
+invr2_flat = invr2.flatten()
+
+initial_discard = 20
+coefficients = np.polyfit(invr2_flat[initial_discard:n-1], smoothed_aa_flat[initial_discard:n-1], 1)
+line = np.poly1d(coefficients)
+
+plt.plot(invr2_flat[initial_discard:n-1], smoothed_aa_flat[initial_discard:n-1])
+#plt.plot(invr2[initial_discard:], line(invr2[initial_discard:]))
+
+
+
+#plt.plot(invr2[1:n-1], aa[1:n-1])
 plt.xlabel("1/r^2")
 plt.ylabel("a")
 
