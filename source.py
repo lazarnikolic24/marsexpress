@@ -126,9 +126,6 @@ smoothed_aa_flat = smoothed_aa.flatten()
 invr2_flat = invr2.flatten()
 
 initial_discard = 60
-coefficients = np.polyfit(invr2_flat[initial_discard:n-1], smoothed_aa_flat[initial_discard:n-1], 1)
-line = np.poly1d(coefficients)
-
 plt.plot(invr2_flat[initial_discard:n-1], smoothed_aa_flat[initial_discard:n-1])
 
 plt.xlabel("1/r^2")
