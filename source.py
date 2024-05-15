@@ -17,23 +17,24 @@ fig1 = plt.figure()
 
 
 #low-res podaci
+plt.subplots_adjust(wspace=0.3)
 plt.subplot(1, 2, 1, title = "lowres data")
-plt.plot(r[:, 0], r[:, 1])
+plt.scatter(r[:, 0], r[:, 1])
 plt.axis("equal")
 plt.xlabel("x [au]")
 plt.ylabel("y [au]")
 
 for i in range(n - 1):
-    plt.plot(r[i, 0], r[i, 1], "o")
+    #plt.plot(r[i, 0], r[i, 1], "o")
     dr = r[i + 1, :] - r[i, :]
     plt.quiver(r[i, 0], r[i, 1], dr[0], dr[1], angles = "xy",
         scale_units = "xy", scale = 1)
 
 for i in range(1, n - 1):
-    plt.plot(r[i, 0], r[i, 1], "o")
+    #plt.plot(r[i, 0], r[i, 1], "o")
     dr = (r[i + 1, :] - r[i, :]) - (r[i, :] - r[i - 1, :])
     plt.quiver(r[i, 0], r[i, 1], dr[0], dr[1], angles = "xy",
-        scale_units = "xy", scale = 1)
+        scale_units = "xy", scale = 1, color = "green")
 
 # high-res податци
 plt.subplot(1, 2, 2, aspect = "equal", title = "highres data")
