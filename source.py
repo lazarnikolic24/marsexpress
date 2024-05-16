@@ -36,7 +36,7 @@ for i in range(1, n - 1):
     plt.quiver(r[i, 0], r[i, 1], dr[0], dr[1], angles = "xy",
         scale_units = "xy", scale = 1, color = "green")
 
-# high-res податци
+# high-res podaci
 plt.subplot(1, 2, 2, aspect = "equal", title = "highres data")
 
 t,x,y = np.loadtxt("marsexpresshr.d", usecols = (0,1,2), unpack = True)
